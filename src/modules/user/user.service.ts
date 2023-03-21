@@ -4,10 +4,17 @@ import { Repository } from "typeorm";
 import { LoginInput } from "../common/dtos/output.dto";
 import { CreateAccountInput } from "./dtos/create-account.dto";
 import { User } from "./entities/user.entity";
+import * as jwt from 'jsonwebtoken';
+import { ConfigService } from "@nestjs/config";
+import { JwtService } from "../jwt/jwt.service";
 
 @Injectable()
 export class UsersService {
-   constructor(@InjectRepository(User) private readonly users:Repository<User>){}
+   constructor(@InjectRepository(User) private readonly users:Repository<User>,
+   private readonly config :ConfigService,
+   private readonly jwtService:JwtService)
+   
+   {}
 
    async createAccount({email, password, role} :CreateAccountInput) : Promise<{ok:boolean,error?:string}> {
       try {
@@ -38,9 +45,10 @@ export class UsersService {
                error : "Contraseña incorrecta."
             };
          };
+         const token = jwt.sign({id:user.id},this.config.get('SECRET_KEY'));
          return { 
             ok:true,
-            token:''
+            token,
          }
       } catch(error){
          return {
