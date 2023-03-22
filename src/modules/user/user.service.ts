@@ -5,6 +5,7 @@ import { LoginInput } from "../common/dtos/output.dto";
 import { CreateAccountInput } from "./dtos/create-account.dto";
 import { User } from "./entities/user.entity";
 import { JwtService } from "../jwt/jwt.service";
+import { EditProfileInput } from "./dtos/edit-profile.dto";
 
 @Injectable()
 export class UsersService {
@@ -58,4 +59,7 @@ export class UsersService {
       return this.users.findOne({where:{id}});
    }
 
+   async editProfile(userId:number,{email,password}:EditProfileInput){
+      return this.users.update(userId,{email,password});
+   }
 }
