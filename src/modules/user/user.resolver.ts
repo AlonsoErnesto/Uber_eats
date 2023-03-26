@@ -70,6 +70,9 @@ export class UsersResolver {
    async editProfile(@AuthUser()authUser:User,@Args('input')editProfileInput:EditProfileInput):Promise<EditProfileOutput>{
       try {
          await this.usersService.editProfile(authUser.id,editProfileInput);
+         return {
+            ok :true,
+         }
       } catch (error) {
          return {
             ok:false,

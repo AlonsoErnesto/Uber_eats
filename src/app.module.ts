@@ -12,6 +12,7 @@ import { JwtModule } from './modules/jwt/jwt.module';
 import { MiddlewareConsumer, NestModule } from '@nestjs/common/interfaces';
 import { JwtMiddleware } from './modules/jwt/jwt.middleware';
 import { RequestMethod } from '@nestjs/common/enums';
+import { Verification } from './modules/user/entities/verification.entity';
 
 @Module({
   imports: [
@@ -38,7 +39,7 @@ import { RequestMethod } from '@nestjs/common/enums';
       database : process.env.DB_NAME,
       synchronize : process.env.NODE_ENV !== 'prod',
       logging : process.env.NODE_ENV !== 'prod',
-      entities : [User]
+      entities : [User, Verification]
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver:ApolloDriver,
