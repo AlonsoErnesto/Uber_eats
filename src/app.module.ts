@@ -13,6 +13,7 @@ import { MiddlewareConsumer, NestModule } from '@nestjs/common/interfaces';
 import { JwtMiddleware } from './modules/jwt/jwt.middleware';
 import { RequestMethod } from '@nestjs/common/enums';
 import { Verification } from './modules/user/entities/verification.entity';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -28,6 +29,9 @@ import { Verification } from './modules/user/entities/verification.entity';
         DB_PASSWORD : Joi.string().required(),
         DB_NAME : Joi.string().required(),
         PRIVATE_KEY:Joi.string().required(),
+        MAILGUN_API_KEY:Joi.string().required(),
+        MAILGUN_FROM_EMAIL:Joi.string().required(),
+        MAILGUN_DOMAIN_NAME:Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -38,7 +42,7 @@ import { Verification } from './modules/user/entities/verification.entity';
       password : process.env.DB_PASSWORD,
       database : process.env.DB_NAME,
       synchronize : process.env.NODE_ENV !== 'prod',
-      logging : process.env.NODE_ENV !== 'prod',
+      logging : process.env.NODE_ENV !== 'prod',  
       entities : [User, Verification]
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -49,6 +53,11 @@ import { Verification } from './modules/user/entities/verification.entity';
     // Modules
     JwtModule.forRoot({
       privateKey:process.env.PRIVATE_KEY,
+    }),
+    MailModule.forRoot({
+      apiKey:process.env.MAILGUN_API_KEY,
+      fromEmail:process.env.MAILGUN_FROM_EMAIL,
+      domain:process.env.MAILGUN_DOMAIN_NAME,
     }),
     UserModule,
   ],
