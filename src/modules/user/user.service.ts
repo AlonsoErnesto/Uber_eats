@@ -86,6 +86,7 @@ export class UsersService {
          if(verification){
             verification.user.verified = true;
             this.users.save(verification.user);
+            await this.verification.delete(verification.id);
             return {ok:true};
          }  
          return { ok:false, error:'Hubo un problema al verificar.'}
@@ -93,4 +94,5 @@ export class UsersService {
          return {ok:true};
       }
    };
+
 }
