@@ -1,14 +1,14 @@
-import { Field, InputType, ObjectType, PickType} from "@nestjs/graphql";
-import { User } from "src/modules/user/entities/user.entity";
+import { Field, InputType, ObjectType, PickType } from '@nestjs/graphql'
+import { User } from 'src/modules/user/entities/user.entity'
 
 @InputType()
-export class LoginInput extends PickType(User,["email","password"]) {}
+export class LoginInput extends PickType(User, ['email', 'password']) {}
 
 @ObjectType()
 export class CoreOutput {
-   @Field( type => String ,{nullable:true})
-   error?:string
-   
-   @Field(type => Boolean)
-   ok : boolean;
+  @Field(() => String, { nullable: true })
+  error?: string
+
+  @Field(() => Boolean)
+  ok: boolean
 }
